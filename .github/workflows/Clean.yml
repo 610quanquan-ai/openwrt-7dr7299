@@ -1,8 +1,8 @@
-name: Auto-Clean
+name: Clean
 
 on:
   workflow_run:
-    workflows: ["TL-7DR7299-v1"]
+    workflows: ["Build"]
     types:
       - completed
   workflow_dispatch:

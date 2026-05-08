@@ -1,4 +1,4 @@
-name: TL-7DR7299-v1
+name: Build
 
 on:
   workflow_dispatch:
