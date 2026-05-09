@@ -27,7 +27,7 @@ clone_if_missing() {
 clone_if_missing https://github.com/sbwml/luci-app-mosdns              ""     package/luci-app-mosdns
 clone_if_missing https://github.com/ximiTech/luci-app-msd_lite         ""     package/luci-app-msd_lite
 clone_if_missing https://github.com/ximiTech/msd_lite                  ""     package/msd_lite
-clone_if_missing https://github.com/pymumu/luci-app-smartdns           "lede" package/luci-app-smartdns
+clone_if_missing https://github.com/pymumu/luci-app-smartdns           ""     package/luci-app-smartdns
 clone_if_missing https://github.com/pymumu/openwrt-smartdns            ""     package/smartdns
 
 WORKSPACE_ROOT="${GITHUB_WORKSPACE:-$(pwd)}"
@@ -42,10 +42,13 @@ fi
 
 # 修改版本为编译日期
 DATE_VERSION="$(date +%Y.%m.%d)"
+VERSION_FILE="include/version.mk"
 echo "[diy] 修改版本为编译日期: $DATE_VERSION"
-sed -i "s/DISTRIB_RELEASE='%V'/DISTRIB_RELEASE='${DATE_VERSION} by JayCQ'/g" package/base-files/files/etc/openwrt_release
-sed -i "s/DISTRIB_DESCRIPTION='%D %V %C'/DISTRIB_DESCRIPTION='%D ${DATE_VERSION} by JayCQ %C'/g" package/base-files/files/etc/openwrt_release
-
+sed -i "s/$/-${DATE_VERSION}/g" package/base-files/files/etc/openwrt_version
+sed -i "s/\(VERSION_NUMBER:=\?.*\)/\1-$DATE_VERSION/" $VERSION_FILE
+if [ -f "package/base-files/files/etc/openwrt_version" ]; then
+    sed -i "s/$/-$DATE_VERSION/" package/base-files/files/etc/openwrt_version
+fi
 
 # 修补 filogic 6.18 内核配置，启用 BPF 相关选项
 KCFG="target/linux/mediatek/filogic/config-6.18"
