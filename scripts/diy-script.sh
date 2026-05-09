@@ -44,7 +44,7 @@ fi
 DATE_VERSION="$(date +%Y.%m.%d)"
 VERSION_FILE="include/version.mk"
 echo "[diy] 修改版本为编译日期: $DATE_VERSION"
-sed -i "s/$/-${DATE_VERSION}/g" package/base-files/files/etc/openwrt_version
+sed -i "s/$/-${DATE_VERSION} by WoChen5770/" package/base-files/files/etc/openwrt_version
 
 # 修补 filogic 6.18 内核配置，启用 BPF 相关选项
 KCFG="target/linux/mediatek/filogic/config-6.18"
