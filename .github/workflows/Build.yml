@@ -1,4 +1,4 @@
-name: Build
+name: Build-mtwifi
 
 on:
   workflow_dispatch:
@@ -9,8 +9,8 @@ permissions:
   contents: write
 
 env:
-  REPO_URL: https://github.com/WoChen5770/imoutowrt.git
-  REPO_BRANCH: master-mediatek-7dr7299
+  REPO_URL: https://github.com/sKyissKy/immortalwrt-mt798x-6.6.git
+  REPO_BRANCH: mt798x-mt799x-6.6-mtwifi
   CONFIG_BASE: configs/TL-7DR7299.txt
   CONFIG_CUSTOM: configs/CUSTOMIZE.txt
   DIY_SCRIPT: scripts/diy-script.sh
