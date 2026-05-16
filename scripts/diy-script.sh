@@ -5,7 +5,7 @@ echo "=== diy-script: 开始自定义编译配置 ==="
 
 # 修改默认IP
 echo "[diy] 修改默认IP为 192.168.123.1"
-sed -i 's/192.168.1.1/192.168.123.1/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.6.1/192.168.123.1/g' package/base-files/files/bin/config_generate
 
 # 移除要替换的包（来自官方 feeds）
 echo "[diy] 移除 feeds 中的旧版 mosdns / msd_lite / smartdns"
@@ -42,9 +42,7 @@ fi
 
 # 修改版本为编译日期
 DATE_VERSION="$(date +%Y.%m.%d)"
-VERSION_FILE="include/version.mk"
-echo "[diy] 修改版本为编译日期: $DATE_VERSION"
-sed -i "s/^VERSION_NUMBER:=.*/VERSION_NUMBER:=-$DATE_VERSION by WoChen5770/" "$VERSION_FILE"
+sed -i "s/^CONFIG_VERSION_NUMBER=.*/CONFIG_VERSION_NUMBER=\"${DATE_VERSION} by WoChen5770\"/" .config
 
 # 修补 filogic 6.18 内核配置，启用 BPF 相关选项
 KCFG="target/linux/mediatek/filogic/config-6.18"
@@ -61,27 +59,6 @@ CONFIG_NET_SCH_BPF=y
 EOF
 else
   echo "[diy] 内核配置未找到: $KCFG"
-fi
-
-
-# 修补 rtl837x-gsw
-FILE="package/kernel/rtl837x-gsw/Makefile"
-if grep -q '^define Build/Prepare$' "$FILE"; then
-	echo "已存在 Build/Prepare，跳过插入: $FILE"
-else
-	TMP="$(mktemp)" || exit 1
-	awk '
-	/^define Build\/Compile$/{
-		print "define Build/Prepare"
-		print "\t$(call Build/Prepare/Default)"
-		print "\tfind $(PKG_BUILD_DIR) -type f \\( -name \"*.c\" -o -name \"*.h\" \\) -exec perl -pi -e '\''s/\\r//g'\'' {} +"
-		print "\tfind $(PKG_BUILD_DIR) -type f \\( -name \"*.c\" -o -name \"*.h\" \\) -exec sed -i '\''s|#include <string.h>|#include <linux/string.h>|g'\'' {} +"
-		print "endef"
-		print ""
-	}
-	{print}
-	' "$FILE" > "$TMP" && mv "$TMP" "$FILE"
-	echo "已插入 Build/Prepare 到: $FILE"
 fi
 
 echo "=== diy-script: 完成 ==="
