@@ -42,9 +42,9 @@ fi
 
 # 修改版本为编译日期
 DATE_VERSION="$(date +%Y.%m.%d)"
-CUSTOM_VER="${DATE_VERSION} by WoChen5770"
-sed -i '/^CONFIG_VERSION_NUMBER=/d' .config
-echo "CONFIG_VERSION_NUMBER=\"${CUSTOM_VER}\"" >> .config
+VERSION_FILE="include/version.mk"
+echo "[diy] 修改版本为编译日期: $DATE_VERSION"
+sed -i "s/^VERSION_NUMBER:=.*/VERSION_NUMBER:=-$DATE_VERSION by WoChen5770/" "$VERSION_FILE"
 
 # 修补 filogic 6.18 内核配置，启用 BPF 相关选项
 KCFG="target/linux/mediatek/filogic/config-6.18"
@@ -64,18 +64,3 @@ else
 fi
 
 echo "=== diy-script: 完成 ==="
-
-# 下载最新的 v2ray geosite.dat 和 geoip.dat 到指定目录
-CFG_FILE="$WORKSPACE_ROOT/configs/CUSTOMIZE.txt"
-if [ -f "$CFG_FILE" ] && \
-   grep -Eq '^[[:space:]]*CONFIG_PACKAGE_daed=y([[:space:]]*(#.*)?)?$' "$CFG_FILE" && \
-   grep -Eq '^[[:space:]]*CONFIG_PACKAGE_daed-geoip=n([[:space:]]*(#.*)?)?$' "$CFG_FILE"; then
-  echo "[INFO] 下载最新的 v2ray geosite.dat 和 geoip.dat"
-  mkdir -p files/usr/share/v2ray
-  curl -L --retry 3 -o files/usr/share/v2ray/geosite.dat \
-    https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat
-  curl -L --retry 3 -o files/usr/share/v2ray/geoip.dat \
-    https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
-else
-  echo "[INFO] 跳过下载geosite.dat 和 geoip.dat"
-fi
