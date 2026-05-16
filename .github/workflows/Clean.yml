@@ -2,7 +2,7 @@ name: Clean
 
 on:
   workflow_run:
-    workflows: ["Build"]
+    workflows: ["Build-mtwifi"]
     types:
       - completed
   workflow_dispatch:
