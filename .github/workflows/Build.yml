@@ -1,4 +1,4 @@
-name: Build-mtwifi
+name: Build
 
 on:
   workflow_dispatch:
