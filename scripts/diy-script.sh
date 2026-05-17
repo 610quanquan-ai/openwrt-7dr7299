@@ -9,8 +9,8 @@ sed -i 's/192.168.6.1/192.168.123.1/g' package/base-files/files/bin/config_gener
 sed -i -E 's|^root:[^:]*:|root::|' package/base-files/files/etc/shadow
 
 # 移除要替换的包（来自官方 feeds）
-echo "[diy] 移除 feeds 中的旧版 mosdns / msd_lite / smartdns"
-for d in feeds/packages/net/mosdns feeds/packages/net/msd_lite feeds/packages/net/smartdns; do
+echo "[diy] 移除 feeds 中的旧版app"
+for d in feeds/packages/net/mosdns feeds/packages/net/msd_lite feeds/packages/net/smartdns feeds/packages/net/dae feeds/packages/net/daed; do
   [ -d "$d" ] && rm -rf "$d" && echo "  已清除: $d"
 done
 
@@ -30,6 +30,7 @@ clone_if_missing https://github.com/ximiTech/luci-app-msd_lite         ""     pa
 clone_if_missing https://github.com/ximiTech/msd_lite                  ""     package/msd_lite
 clone_if_missing https://github.com/pymumu/luci-app-smartdns           ""     package/luci-app-smartdns
 clone_if_missing https://github.com/pymumu/openwrt-smartdns            ""     package/smartdns
+clone_if_missing https://github.com/QiuSimons/luci-app-daed            ""     package/dae
 
 WORKSPACE_ROOT="${GITHUB_WORKSPACE:-$(pwd)}"
 
