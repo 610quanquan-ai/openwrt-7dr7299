@@ -11,7 +11,7 @@
 - 固件默认管理地址：`192.168.123.1`
 - 默认用户：`root`
 - 默认密码：`无`
-- 编译源码：[sKyissKy/immortalwrt-mt798x-6.6](https://github.com/sKyissKy/immortalwrt-mt798x-6.6.git)
+- 编译源码：[padavanonly/immortalwrt-mt798x-6.6](https://github.com/padavanonly/immortalwrt-mt798x-6.6.git)
 - 源码分支：`mt798x-mt799x-6.6-mtwifi`
 - 在线编译工作流：[`.github/workflows/Build.yml`](.github/workflows/Build.yml)
 - 专用配置文件：[configs/TL-7DR7299.txt](configs/TL-7DR7299.txt)（机型基础配置） + [configs/CUSTOMIZE.txt](configs/CUSTOMIZE.txt)（功能定制配置）

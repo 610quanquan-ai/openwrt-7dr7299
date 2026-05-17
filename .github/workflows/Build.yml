@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 env:
-  REPO_URL: https://github.com/sKyissKy/immortalwrt-mt798x-6.6.git
+  REPO_URL: https://github.com/padavanonly/immortalwrt-mt798x-6.6.git
   REPO_BRANCH: mt798x-mt799x-6.6-mtwifi
   CONFIG_BASE: configs/TL-7DR7299.txt
   CONFIG_CUSTOM: configs/CUSTOMIZE.txt
