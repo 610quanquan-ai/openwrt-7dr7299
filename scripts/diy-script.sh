@@ -43,8 +43,8 @@ fi
 
 # 修改版本为编译日期
 DATE_VERSION="$(date +%Y.%m.%d)"
+VERSION_FILE="include/version.mk"
 echo "[diy] 修改版本为编译日期: $DATE_VERSION"
-sed -i "s/(\(luciversion || ''\))/(\1) + (' \/ by WoChen5770-$DATE_VERSION')/g" $(find ./feeds/luci/modules/luci-mod-status/ -type f -name "10_system.js")
-
+sed -i "s/^VERSION_NUMBER:=.*/VERSION_NUMBER:=-$DATE_VERSION by WoChen5770/" "$VERSION_FILE"
 
 echo "=== diy-script: 完成 ==="
