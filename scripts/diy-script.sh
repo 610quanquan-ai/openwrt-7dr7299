@@ -6,6 +6,7 @@ echo "=== diy-script: 开始自定义编译配置 ==="
 # 修改默认IP
 echo "[diy] 修改默认IP为 192.168.123.1"
 sed -i 's/192.168.6.1/192.168.123.1/g' package/base-files/files/bin/config_generate
+sed -i -E 's|^root:[^:]*:|root::|' package/base-files/files/etc/shadow
 
 # 移除要替换的包（来自官方 feeds）
 echo "[diy] 移除 feeds 中的旧版 mosdns / msd_lite / smartdns"
@@ -42,25 +43,8 @@ fi
 
 # 修改版本为编译日期
 DATE_VERSION="$(date +%Y.%m.%d)"
-VERSION_FILE="include/version.mk"
 echo "[diy] 修改版本为编译日期: $DATE_VERSION"
-sed -i "s/^VERSION_NUMBER:=.*/VERSION_NUMBER:=-$DATE_VERSION by WoChen5770/" "$VERSION_FILE"
+sed -i "s/(\(luciversion || ''\))/(\1) + (' \/ by WoChen5770-$DATE_VERSION')/g" $(find ./feeds/luci/modules/luci-mod-status/ -type f -name "10_system.js")
 
-# 修补 filogic 6.18 内核配置，启用 BPF 相关选项
-KCFG="target/linux/mediatek/filogic/config-6.18"
-if [ -f "$KCFG" ]; then
-  echo "[diy] 补丁内核配置: $KCFG (启用 BPF)"
-  for opt in CONFIG_BPF_SYSCALL CONFIG_BPF_JIT CONFIG_NET_SCH_BPF; do
-    sed -i "/^${opt}=.*/d" "$KCFG"
-    sed -i "/^# ${opt} is not set/d" "$KCFG"
-  done
-  cat >> "$KCFG" <<'EOF'
-CONFIG_BPF_SYSCALL=y
-CONFIG_BPF_JIT=y
-CONFIG_NET_SCH_BPF=y
-EOF
-else
-  echo "[diy] 内核配置未找到: $KCFG"
-fi
 
 echo "=== diy-script: 完成 ==="
