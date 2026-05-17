@@ -13,6 +13,8 @@ echo "[diy] 移除 feeds 中的旧版app"
 for d in feeds/packages/net/mosdns feeds/packages/net/msd_lite feeds/packages/net/smartdns feeds/packages/net/dae feeds/packages/net/daed; do
   [ -d "$d" ] && rm -rf "$d" && echo "  已清除: $d"
 done
+rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls,haproxy}
+rm -rf feeds/luci/applications/luci-app-passwall
 
 # 克隆第三方插件源（如果目录已存在则跳过，避免重复执行报错）
 clone_if_missing() {
@@ -31,10 +33,12 @@ clone_if_missing https://github.com/ximiTech/msd_lite                  ""     pa
 clone_if_missing https://github.com/pymumu/luci-app-smartdns           ""     package/luci-app-smartdns
 clone_if_missing https://github.com/pymumu/openwrt-smartdns            ""     package/smartdns
 clone_if_missing https://github.com/QiuSimons/luci-app-daed            ""     package/dae
+clone_if_missing https://github.com/Openwrt-Passwall/openwrt-passwall-packages package/passwall-packages
+clone_if_missing https://github.com/Openwrt-Passwall/openwrt-passwall  ""     package/passwall-luci
 
-WORKSPACE_ROOT="${GITHUB_WORKSPACE:-$(pwd)}"
 
 # 同步仓库内维护的 patches 目录到 OpenWrt 源码树
+WORKSPACE_ROOT="${GITHUB_WORKSPACE:-$(pwd)}"
 if [ -d "$WORKSPACE_ROOT/patches" ]; then
   echo "[diy] 同步自定义 patches 目录到源码树"
   cp -rf "$WORKSPACE_ROOT/patches/." ./
