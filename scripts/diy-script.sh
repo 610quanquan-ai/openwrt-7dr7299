@@ -10,9 +10,7 @@ sed -i -E 's|^root:[^:]*:|root::|' package/base-files/files/etc/shadow
 
 # 移除要替换的包（来自官方 feeds）
 echo "[diy] 移除 feeds 中的旧版app"
-for d in feeds/packages/net/mosdns feeds/packages/net/msd_lite feeds/packages/net/smartdns feeds/packages/net/dae feeds/packages/net/daed; do
-  [ -d "$d" ] && rm -rf "$d" && echo "  已清除: $d"
-done
+rm -rf feeds/packages/net/mosdns feeds/packages/net/msd_lite feeds/packages/net/smartdns feeds/packages/net/dae feeds/packages/net/daed package/feeds/luci/luci-app-dae package/feeds/luci/luci-app-daed
 rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls,haproxy}
 rm -rf feeds/luci/applications/luci-app-passwall
 

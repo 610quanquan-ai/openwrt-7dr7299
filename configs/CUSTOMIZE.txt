@@ -78,17 +78,3 @@ CONFIG_PACKAGE_rtp2httpd=y
 CONFIG_PACKAGE_luci-app-rtp2httpd=y
 CONFIG_PACKAGE_luci-i18n-rtp2httpd-zh-cn=y
 
-# ---------------------------------------------------------
-# VLMCSD/KMS
-# ---------------------------------------------------------
-CONFIG_PACKAGE_vlmcsd=y
-CONFIG_PACKAGE_luci-app-vlmcsd=y
-CONFIG_PACKAGE_luci-i18n-vlmcsd-zh-cn=y
-
-# ---------------------------------------------------------
-# Socat
-# ---------------------------------------------------------
-CONFIG_PACKAGE_socat=y
-CONFIG_SOCAT_SSL=y
-CONFIG_PACKAGE_luci-app-socat=y
-CONFIG_PACKAGE_luci-i18n-socat-zh-cn=y
