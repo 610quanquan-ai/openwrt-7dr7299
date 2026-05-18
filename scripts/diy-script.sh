@@ -36,34 +36,18 @@ clone_if_missing https://github.com/Openwrt-Passwall/openwrt-passwall  ""     pa
 
 WORKSPACE_ROOT="${GITHUB_WORKSPACE:-$(pwd)}"
 
-# Replace official golang feed and reinstall related packages
-GOLANG_SRC_DIR="$WORKSPACE_ROOT/scripts/golang"
-GOLANG_FEED_DIR="feeds/packages/lang/golang"
-if [ -d "$GOLANG_SRC_DIR" ] && [ -d "feeds/packages/lang" ]; then
-  echo "[diy] 替换 feeds/packages/lang/golang"
-  rm -rf "$GOLANG_FEED_DIR"
-  mkdir -p "$GOLANG_FEED_DIR"
-  cp -rf "$GOLANG_SRC_DIR/." "$GOLANG_FEED_DIR/"
-  echo "[diy] 当前 golang feed 目录:"
-  ls -1 "$GOLANG_FEED_DIR"
-
-  echo "[diy] 重新安装 golang 相关包"
-  rm -rf package/feeds/packages/golang \
-         package/feeds/packages/golang-bootstrap \
-         package/feeds/packages/golang1.23 \
-         package/feeds/packages/golang1.26
-  ./scripts/feeds install -f golang golang-bootstrap golang1.23 golang1.26
-
-  echo "[diy] 已安装的 golang 包目录:"
-  for pkg in golang golang-bootstrap golang1.23 golang1.26; do
-    if [ -d "package/feeds/packages/$pkg" ]; then
-      echo "[diy] ok: package/feeds/packages/$pkg"
-    else
-      echo "[diy] missing: package/feeds/packages/$pkg"
-    fi
-  done
+# Inject standalone golang1.26 feed without changing default golang
+GOLANG126_SRC_DIR="$WORKSPACE_ROOT/scripts/golang1.26"
+GOLANG126_FEED_DIR="feeds/packages/lang/golang1.26"
+if [ -d "$GOLANG126_SRC_DIR" ] && [ -d "feeds/packages/lang" ]; then
+  echo "[diy] 注入feeds/packages/lang/golang1.26"
+  rm -rf "$GOLANG126_FEED_DIR"
+  mkdir -p "$GOLANG126_FEED_DIR"
+  cp -rf "$GOLANG126_SRC_DIR/." "$GOLANG126_FEED_DIR/"
+  echo "[diy] 当前 golang1.26 feed 目录:"
+  ls -1 "$GOLANG126_FEED_DIR"
 else
-  echo "[diy] 未找到 $GOLANG_SRC_DIR 或 feeds/packages/lang，跳过 golang 替换"
+  echo "[diy] 跳过 golang1.26 注入"
 fi
 
 # Make daed use golang1.26/host

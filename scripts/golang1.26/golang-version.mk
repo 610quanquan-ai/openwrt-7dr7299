@@ -7,7 +7,6 @@
 HOST_GO_PREFIX:=$(STAGING_DIR_HOSTPKG)
 HOST_GO_VERSION_ID:=$(GO_VERSION_MAJOR_MINOR)
 HOST_GO_ROOT:=$(HOST_GO_PREFIX)/lib/go-$(HOST_GO_VERSION_ID)
-HOST_GO_PROFILE_ID?=Host
 
 ifeq ($(CONFIG_GOLANG_BUILD_BOOTSTRAP),y)
   BOOTSTRAP_DIR:=$(HOST_GO_PREFIX)/lib/go-$(GO_BOOTSTRAP_VERSION)
@@ -297,5 +296,5 @@ endef
 # src/debug contains ELF executables as test data and they reference these
 # libraries we need to call this to pass CheckDependencies in package-pack.mk
 define Package/$(PKG_NAME)-tests/extra_provides
-	echo 'libc.so.6 libstdc++.so.6 libtiff.so.6' | tr ' ' '\n'
+	echo 'libc.so.6' libstdc++.so.6' libtiff.so.6' | tr ' ' '\n'
 endef
