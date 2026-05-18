@@ -47,7 +47,7 @@ if [ -d "$GOLANG126_SRC_DIR" ] && [ -d "feeds/packages/lang" ]; then
   echo "[diy] 当前 golang1.26 feed 目录:"
   ls -1 "$GOLANG126_FEED_DIR"
   ./scripts/feeds update -f packages
-  ./scripts/feeds install -a
+  ./scripts/feeds install golang1.26
 else
   echo "[diy] 跳过 golang1.26 注入"
 fi
