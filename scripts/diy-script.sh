@@ -36,21 +36,34 @@ clone_if_missing https://github.com/Openwrt-Passwall/openwrt-passwall  ""     pa
 
 WORKSPACE_ROOT="${GITHUB_WORKSPACE:-$(pwd)}"
 
-# Inject golang1.26 and golang-bootstrap into package/feeds/packages
+# Replace official golang feed and reinstall related packages
 GOLANG_SRC_DIR="$WORKSPACE_ROOT/scripts/golang"
-GOLANG_PKG_DIR="package/feeds/packages"
-if [ -d "$GOLANG_PKG_DIR" ] && [ -d "$GOLANG_SRC_DIR" ]; then
-  echo "[diy] 注入 scripts/golang/golang1.26 到 package/feeds/packages"
-  mkdir -p "$GOLANG_PKG_DIR/golang1.26"
-  cp -rf "$GOLANG_SRC_DIR/golang1.26/." "$GOLANG_PKG_DIR/golang1.26/"
+GOLANG_FEED_DIR="feeds/packages/lang/golang"
+if [ -d "$GOLANG_SRC_DIR" ] && [ -d "feeds/packages/lang" ]; then
+  echo "[diy] 替换 feeds/packages/lang/golang"
+  rm -rf "$GOLANG_FEED_DIR"
+  mkdir -p "$GOLANG_FEED_DIR"
+  cp -rf "$GOLANG_SRC_DIR/." "$GOLANG_FEED_DIR/"
+  echo "[diy] 当前 golang feed 目录:"
+  ls -1 "$GOLANG_FEED_DIR"
 
-  if [ -d "$GOLANG_SRC_DIR/golang-bootstrap" ]; then
-    echo "[diy] 注入 scripts/golang/golang-bootstrap 到 package/feeds/packages"
-    mkdir -p "$GOLANG_PKG_DIR/golang-bootstrap"
-    cp -rf "$GOLANG_SRC_DIR/golang-bootstrap/." "$GOLANG_PKG_DIR/golang-bootstrap/"
-  fi
+  echo "[diy] 重新安装 golang 相关包"
+  rm -rf package/feeds/packages/golang \
+         package/feeds/packages/golang-bootstrap \
+         package/feeds/packages/golang1.23 \
+         package/feeds/packages/golang1.26
+  ./scripts/feeds install -f golang golang-bootstrap golang1.23 golang1.26
+
+  echo "[diy] 已安装的 golang 包目录:"
+  for pkg in golang golang-bootstrap golang1.23 golang1.26; do
+    if [ -d "package/feeds/packages/$pkg" ]; then
+      echo "[diy] ok: package/feeds/packages/$pkg"
+    else
+      echo "[diy] missing: package/feeds/packages/$pkg"
+    fi
+  done
 else
-  echo "[diy] 未找到 $GOLANG_PKG_DIR 或 $GOLANG_SRC_DIR，跳过 golang1.26 注入"
+  echo "[diy] 未找到 $GOLANG_SRC_DIR 或 feeds/packages/lang，跳过 golang 替换"
 fi
 
 # Make daed use golang1.26/host
