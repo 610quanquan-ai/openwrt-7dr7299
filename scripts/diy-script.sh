@@ -57,6 +57,7 @@ DAED_MAKEFILE="package/dae/daed/Makefile"
 if [ -f "$DAED_MAKEFILE" ]; then
   echo "[diy] patch daed -> golang1.26"
   sed -i 's#^PKG_BUILD_DEPENDS:=golang/host bpf-headers#PKG_BUILD_DEPENDS:=golang1.26/host bpf-headers#' "$DAED_MAKEFILE"
+  sed -i 's|include \$(TOPDIR)/feeds/packages/lang/golang/golang-package\.mk|include $(TOPDIR)/feeds/packages/lang/golang1.26/golang-package.mk|g' "$DAED_MAKEFILE"
 else
   echo "[diy] 未找到 $DAED_MAKEFILE，跳过 daed golang1.26 patch"
 fi
