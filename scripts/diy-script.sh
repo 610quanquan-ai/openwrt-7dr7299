@@ -52,15 +52,10 @@ else
   echo "[diy] 跳过 golang1.26 注入"
 fi
 
-# Make daed use golang1.26/host
-DAED_MAKEFILE="package/dae/daed/Makefile"
-if [ -f "$DAED_MAKEFILE" ]; then
-  echo "[diy] patch daed -> golang1.26"
-  sed -i 's#^PKG_BUILD_DEPENDS:=golang/host bpf-headers#PKG_BUILD_DEPENDS:=golang1.26/host bpf-headers#' "$DAED_MAKEFILE"
-  sed -i 's|include \$(TOPDIR)/feeds/packages/lang/golang/golang-package\.mk|include $(TOPDIR)/feeds/packages/lang/golang1.26/golang-package.mk|g' "$DAED_MAKEFILE"
-else
-  echo "[diy] 未找到 $DAED_MAKEFILE，跳过 daed golang1.26 patch"
-fi
+# passwall daed use golang1.26/host
+find package/dae package/passwall-packages -name "Makefile" -type f -exec sed -i \
+    -e 's|\(include.*\)golang/host|\1golang1.26/host|' \
+    -e 's|\(include.*\)golang/golang-package.mk|\1golang1.26/golang-package.mk|' {} +
 
 
 # 同步仓库内维护的 patches 目录到 OpenWrt 源码树
