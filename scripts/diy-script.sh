@@ -53,12 +53,9 @@ else
 fi
 
 # passwall daed use golang1.26/host
-find package/dae package/passwall-packages -name "Makefile" -type f -exec sed -i \
-    -e 's|\(include.*\)golang/host|\1golang1.26/host|' \
-    -e 's|\(include.*\)golang/golang-package.mk|\1golang1.26/golang-package.mk|' {} +
-find package/dae package/passwall-packages -name "Makefile" -type f -exec sed -i \
-  -e 's|\(include.*\)golang/host|\1golang1.26/host|' \
-  -e 's|\(include.*\)golang/golang-package.mk|\1golang1.26/golang-package.mk|' {} +
+ind package/dae package/passwall-packages -name "Makefile" -type f -exec sed -i \
+  -e 's|\<golang/golang-package.mk\>|golang1.26/golang-package.mk|g' \
+  -e 's|\<golang/host\>|golang1.26/host|g' {} +
 echo "===== 替换后检查 ====="
 echo "[1] golang1.26/host 命中行："
 grep -RIn 'include.*golang1\.26/host' package/dae package/passwall-packages || echo "未找到"
