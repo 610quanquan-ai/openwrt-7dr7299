@@ -33,6 +33,8 @@ clone_if_missing https://github.com/pymumu/openwrt-smartdns            ""     pa
 clone_if_missing https://github.com/QiuSimons/luci-app-daed            ""     package/dae
 clone_if_missing https://github.com/Openwrt-Passwall/openwrt-passwall-packages "" package/passwall-packages
 clone_if_missing https://github.com/Openwrt-Passwall/openwrt-passwall  ""     package/passwall-luci
+clone_if_missing https://github.com/EasyTier/luci-app-easytier.git     ""     package/luci-app-easytier
+
 
 WORKSPACE_ROOT="${GITHUB_WORKSPACE:-$(pwd)}"
 
