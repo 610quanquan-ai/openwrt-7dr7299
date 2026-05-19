@@ -53,7 +53,7 @@ else
 fi
 
 # passwall daed use golang1.26/host
-ind package/dae package/passwall-packages -name "Makefile" -type f -exec sed -i \
+find package/dae package/passwall-packages -name "Makefile" -type f -exec sed -i \
   -e 's|\<golang/golang-package.mk\>|golang1.26/golang-package.mk|g' \
   -e 's|\<golang/host\>|golang1.26/host|g' {} +
 echo "===== 替换后检查 ====="
