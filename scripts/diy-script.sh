@@ -39,35 +39,18 @@ WORKSPACE_ROOT="${GITHUB_WORKSPACE:-$(pwd)}"
 # Inject standalone golang1.26 feed without changing default golang
 GOLANG126_SRC_DIR="$WORKSPACE_ROOT/scripts/golang1.26"
 GOLANG126_FEED_DIR="feeds/packages/lang/golang1.26"
-if [ -d "$GOLANG126_SRC_DIR" ] && [ -d "feeds/packages/lang" ]; then
-  echo "[diy] 注入feeds/packages/lang/golang1.26"
-  rm -rf "$GOLANG126_FEED_DIR"
-  mkdir -p "$GOLANG126_FEED_DIR"
-  cp -rf "$GOLANG126_SRC_DIR/." "$GOLANG126_FEED_DIR/"
-  echo "[diy] 当前 golang1.26 feed 目录:"
-  ls -1 "$GOLANG126_FEED_DIR"
-  ./scripts/feeds update -f packages
-  ./scripts/feeds install golang1.26
-else
-  echo "[diy] 跳过 golang1.26 注入"
-fi
+rm -rf "$GOLANG126_FEED_DIR"
+mkdir -p "$GOLANG126_FEED_DIR"
+cp -rf "$GOLANG126_SRC_DIR/." "$GOLANG126_FEED_DIR/"
+./scripts/feeds update -f packages
+./scripts/feeds install golang1.26
+
 
 # passwall daed use golang1.26/host
 find package/dae package/passwall-packages -name "Makefile" -type f -exec sed -i \
   -e 's|\<golang/golang-package.mk\>|golang1.26/golang-package.mk|g' \
   -e 's|\<golang/host\>|golang1.26/host|g' {} +
-echo "===== 替换后检查 ====="
-echo "[1] golang1.26/host 命中行："
-grep -RIn '.*golang1\.26/host' package/dae package/passwall-packages || echo "未找到"
-echo
-echo "[2] golang1.26/golang-package.mk 命中行："
-grep -RIn '.*golang1\.26/golang-package\.mk' package/dae package/passwall-packages || echo "未找到"
-echo
-echo "[3] 仍残留旧写法 golang/host："
-grep -RIn '.*golang/host' package/dae package/passwall-packages || echo "无残留"
-echo
-echo "[4] 仍残留旧写法 golang/golang-package.mk："
-grep -RIn '.*golang/golang-package\.mk' package/dae package/passwall-packages || echo "无残留"
+
 
 # 同步仓库内维护的 patches 目录到 OpenWrt 源码树
 if [ -d "$WORKSPACE_ROOT/patches" ]; then
