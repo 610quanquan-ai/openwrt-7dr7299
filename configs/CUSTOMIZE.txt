@@ -74,7 +74,7 @@ CONFIG_PACKAGE_luci-i18n-zerotier-zh-cn=y
 # ---------------------------------------------------------
 # RTP2HTTPD
 # ---------------------------------------------------------
-CONFIG_PACKAGE_rtp2httpd=y
-CONFIG_PACKAGE_luci-app-rtp2httpd=y
-CONFIG_PACKAGE_luci-i18n-rtp2httpd-zh-cn=y
+CONFIG_PACKAGE_rtp2httpd=n
+CONFIG_PACKAGE_luci-app-rtp2httpd=n
+CONFIG_PACKAGE_luci-i18n-rtp2httpd-zh-cn=n
 
