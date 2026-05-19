@@ -58,16 +58,16 @@ find package/dae package/passwall-packages -name "Makefile" -type f -exec sed -i
   -e 's|\<golang/host\>|golang1.26/host|g' {} +
 echo "===== 替换后检查 ====="
 echo "[1] golang1.26/host 命中行："
-grep -RIn 'include.*golang1\.26/host' package/dae package/passwall-packages || echo "未找到"
+grep -RIn '.*golang1\.26/host' package/dae package/passwall-packages || echo "未找到"
 echo
 echo "[2] golang1.26/golang-package.mk 命中行："
-grep -RIn 'include.*golang1\.26/golang-package\.mk' package/dae package/passwall-packages || echo "未找到"
+grep -RIn '.*golang1\.26/golang-package\.mk' package/dae package/passwall-packages || echo "未找到"
 echo
 echo "[3] 仍残留旧写法 golang/host："
-grep -RIn 'include.*golang/host' package/dae package/passwall-packages || echo "无残留"
+grep -RIn '.*golang/host' package/dae package/passwall-packages || echo "无残留"
 echo
 echo "[4] 仍残留旧写法 golang/golang-package.mk："
-grep -RIn 'include.*golang/golang-package\.mk' package/dae package/passwall-packages || echo "无残留"
+grep -RIn '.*golang/golang-package\.mk' package/dae package/passwall-packages || echo "无残留"
 
 # 同步仓库内维护的 patches 目录到 OpenWrt 源码树
 if [ -d "$WORKSPACE_ROOT/patches" ]; then
