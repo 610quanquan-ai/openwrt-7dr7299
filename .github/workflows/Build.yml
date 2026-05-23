@@ -9,8 +9,8 @@ permissions:
   contents: write
 
 env:
-  REPO_URL: https://github.com/RuijieNetworksCommunity/MT798X-6.6-24.10.git
-  REPO_BRANCH: mt798x-mt799x-mtwifi_be72pro_be68u
+  REPO_URL: https://github.com/padavanonly/immortalwrt-mt798x-6.6.git
+  REPO_BRANCH: mt798x-mt799x-6.6-mtwifi
   CONFIG_BASE: configs/TL-7DR7299.txt
   CONFIG_CUSTOM: configs/CUSTOMIZE.txt
   DIY_SCRIPT: scripts/diy-script.sh
