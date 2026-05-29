@@ -102,8 +102,12 @@ jobs:
         echo "DEVICE_SUBTARGET=$DEVICE_SUBTARGET" >> $GITHUB_ENV
         DEVICE_PROFILE=$(grep '^CONFIG_TARGET_.*DEVICE_.*=y$' .config | sed 's/^CONFIG_TARGET_//; s/=y$//' | tail -n 1)
         echo "DEVICE_PROFILE=$DEVICE_PROFILE" >> $GITHUB_ENV
-        CLEAN_CACHE="${{ github.event.inputs.clean_toolchain || 'false' }}"
-        echo "CLEAN_CACHE=$CLEAN_CACHE" >> $GITHUB_ENV
+
+    - name: Cache Clean(清理缓存)
+      if: github.event.inputs.clean_toolchain == 'true'
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: gh cache delete --all
 
     - name: Cache Toolchain(缓存工具链)
       if: env.CACHE_TOOLCHAIN == 'true'
@@ -111,7 +115,6 @@ jobs:
       with:
         ccache: true
         toolchain: true
-        clean: ${{ env.CLEAN_CACHE }}
         mixkey: ${{ env.SOURCE_REPO }}-${{ env.REPO_BRANCH }}-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
         prefix: ${{ env.OPENWRT_PATH }}
 
