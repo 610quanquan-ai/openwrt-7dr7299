@@ -14,8 +14,7 @@ on:
   schedule:
     - cron: '0 18 */3 * *'
 
-permissions:
-  contents: write
+permissions: write-all
 
 env:
   REPO_URL: https://github.com/padavanonly/immortalwrt-mt798x-6.6.git
