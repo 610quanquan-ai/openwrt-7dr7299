@@ -1,6 +1,9 @@
 CONFIG_TARGET_mediatek=y
-CONFIG_TARGET_mediatek_filogic=y
+CONFIG_TARGET_mediatek_filogic_a73=y
 CONFIG_TARGET_mediatek_filogic_a73_DEVICE_tplink_tl-7dr7299-v1=y
+CONFIG_TARGET_SUBTARGET="filogic_a73"
+CONFIG_DEFAULT_TARGET_OPTIMIZATION="-Os -pipe -march=armv8-a+crypto+crc -mtune=cortex-a73"
+CONFIG_TARGET_OPTIMIZATION="-Os -pipe -march=armv8-a+crypto+crc -mtune=cortex-a73"
 CONFIG_COREMARK_ENABLE_MULTITHREADING=y
 CONFIG_COREMARK_NUMBER_OF_THREADS=16
 CONFIG_COREMARK_OPTIMIZE_O3=y
