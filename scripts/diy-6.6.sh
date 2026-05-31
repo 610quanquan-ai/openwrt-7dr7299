@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e -o pipefail
 
-# Inject standalone golang1.26 feed without changing default golang
+WORKSPACE_ROOT="${GITHUB_WORKSPACE:-$(pwd)}"
 GOLANG126_SRC_DIR="$WORKSPACE_ROOT/scripts/6.6/golang1.26"
 GOLANG126_FEED_DIR="feeds/packages/lang/golang1.26"
 rm -rf "$GOLANG126_FEED_DIR"
