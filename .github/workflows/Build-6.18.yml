@@ -2,11 +2,19 @@ name: Build-6.18
 
 on:
   workflow_dispatch:
+    inputs:
+      clean_toolchain:
+        description: '是否清理已缓存的工具链（强制重新编译）'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
   schedule:
     - cron: '0 18 */3 * *'
 
-permissions:
-  contents: write
+permissions: write-all
 
 env:
   REPO_URL: https://github.com/WoChen5770/imoutowrt.git
@@ -25,6 +33,17 @@ jobs:
   Build:
     runs-on: ubuntu-latest
     steps:
+    - name: Free disk space
+      uses: jlumbroso/free-disk-space@main
+      with:
+        tool-cache: false
+        android: true
+        dotnet: true
+        haskell: true
+        large-packages: true
+        docker-images: true
+        swap-storage: false
+
     - name: Initialization Environment(初始化环境)
       env:
         DEBIAN_FRONTEND: noninteractive
@@ -44,15 +63,8 @@ jobs:
         sudo -E systemctl daemon-reload
         sudo timedatectl set-timezone "$TZ"
 
-    - name: Combine Disks(合并磁盘)
-      uses: easimon/maximize-build-space@master
-      with:
-        swap-size-mb: 1024
-        temp-reserve-mb: 100
-        root-reserve-mb: 1024
-
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Clone Source Code(克隆源代码)
       run: |
@@ -75,6 +87,7 @@ jobs:
         [ -e $CONFIG_BASE ] && cat $CONFIG_BASE > $OPENWRT_PATH/.config
         [ -e $CONFIG_CUSTOM ] && cat $CONFIG_CUSTOM >> $OPENWRT_PATH/.config
         [ -e "$GITHUB_WORKSPACE/$DIY_SCRIPT" ] && chmod +x "$GITHUB_WORKSPACE/$DIY_SCRIPT" && cd "$OPENWRT_PATH" && "$GITHUB_WORKSPACE/$DIY_SCRIPT"
+        [ -e "$GITHUB_WORKSPACE/$DIY_SCRIPT_2" ] && chmod +x "$GITHUB_WORKSPACE/$DIY_SCRIPT_2" && cd "$OPENWRT_PATH" && "$GITHUB_WORKSPACE/$DIY_SCRIPT_2"
         cd $OPENWRT_PATH
         make defconfig
 
@@ -91,6 +104,12 @@ jobs:
         DEVICE_PROFILE=$(grep '^CONFIG_TARGET_.*DEVICE_.*=y$' .config | sed 's/^CONFIG_TARGET_//; s/=y$//' | tail -n 1)
         echo "DEVICE_PROFILE=$DEVICE_PROFILE" >> $GITHUB_ENV
 
+    - name: Cache Clean(清理缓存)
+      if: github.event.inputs.clean_toolchain == 'true'
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: gh cache delete --all
+
     - name: Cache Toolchain(缓存工具链)
       if: env.CACHE_TOOLCHAIN == 'true'
       uses: HiGarfield/cachewrtbuild@main
@@ -103,7 +122,7 @@ jobs:
     - name: Download DL Package(下载DL软件包)
       run: |
         cd $OPENWRT_PATH
-        make download -j8 V=s
+        make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
 
