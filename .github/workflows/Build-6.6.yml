@@ -173,7 +173,7 @@ jobs:
       with:
         name: ImmortalWrt ${{ env.FIRMWARE_TAG }} (${{ env.DATE }})
         allowUpdates: true
-        tag: ${{ env.FIRMWARE_TAG }}-${{ env.FILE_DATE }}
+        tag: ${{ env.FIRMWARE_TAG }}-${{ env.VERSION_KERNEL }}-${{ env.FILE_DATE }}
         token: ${{ secrets.GITHUB_TOKEN }}
         artifacts: ${{ env.FIRMWARE_PATH }}/*
         body: |
