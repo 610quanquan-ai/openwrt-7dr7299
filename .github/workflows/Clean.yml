@@ -2,7 +2,7 @@ name: Clean
 
 on:
   workflow_run:
-    workflows: ["Build"]
+    workflows: ["Build-6.6", "Build-6.18"]
     types:
       - completed
   workflow_dispatch:
