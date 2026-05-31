@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e -o pipefail
 
+WORKSPACE_ROOT="${GITHUB_WORKSPACE:-$(pwd)}"
+
 # 修补 filogic 6.18 内核配置，启用 BPF 相关选项
 KCFG="target/linux/mediatek/filogic/config-6.18"
 if [ -f "$KCFG" ]; then
