@@ -36,14 +36,6 @@ clone_if_missing https://github.com/Openwrt-Passwall/openwrt-passwall  ""     pa
 clone_if_missing https://github.com/EasyTier/luci-app-easytier.git     ""     package/luci-app-easytier
 
 
-# 同步仓库内维护的 patches 目录到 OpenWrt 源码树
-if [ -d "$WORKSPACE_ROOT/patches" ]; then
-  echo "[diy] 同步自定义 patches 目录到源码树"
-  cp -rf "$WORKSPACE_ROOT/patches/." ./
-else
-  echo "[diy] patches 目录不存在，跳过"
-fi
-
 # 修改版本为编译日期
 DATE_VERSION="$(date +%Y.%m.%d)"
 VERSION_FILE="include/version.mk"
