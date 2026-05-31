@@ -7,11 +7,8 @@
 
 ## 项目说明 
 
-- 固件机型：`TP-Link TL-7DR7299 v1 闭源固件`
+- 固件机型：`TP-Link TL-7DR7299 v1`
+- 在线编译版本：`6.6 内核闭源驱动固件` + `6.18 内核开源驱动固件`
 - 固件默认管理地址：`192.168.123.1`
 - 默认用户：`root`
 - 默认密码：`无`
-- 编译源码：[padavanonly/immortalwrt-mt798x-6.6](https://github.com/padavanonly/immortalwrt-mt798x-6.6.git)
-- 源码分支：`mt798x-mt799x-6.6-mtwifi`
-- 在线编译工作流：[`.github/workflows/Build.yml`](.github/workflows/Build.yml)
-- 专用配置文件：[configs/TL-7DR7299.txt](configs/TL-7DR7299.txt)（机型基础配置） + [configs/CUSTOMIZE.txt](configs/CUSTOMIZE.txt)（功能定制配置）
