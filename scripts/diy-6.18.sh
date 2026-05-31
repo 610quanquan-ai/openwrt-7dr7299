@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e -o pipefail
 
-WORKSPACE_ROOT="${GITHUB_WORKSPACE:-$(pwd)}"
-
 # 修补 filogic 6.18 内核配置，启用 BPF 相关选项
 KCFG="target/linux/mediatek/filogic/config-6.18"
 if [ -f "$KCFG" ]; then
@@ -21,6 +19,11 @@ else
 fi
 
 # 同步仓库内维护的 patches 目录到 OpenWrt 源码树
+WORKSPACE_ROOT="${GITHUB_WORKSPACE:-$(pwd)}"
+
+echo "当前WORKSPACE_ROOT目录   = $(WORKSPACE_ROOT)"
+echo "当前工作目录   = $(pwd)"
+
 if [ -d "$WORKSPACE_ROOT/patches/6.18" ]; then
   echo "[diy] 同步自定义 patches/6.18 目录到源码树"
   cp -rf "$WORKSPACE_ROOT/patches/6.18/." ./
